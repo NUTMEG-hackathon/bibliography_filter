@@ -1,25 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Typography, Box, CssBaseline } from '@mui/material';
+import { Container } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Serch from './components/serch';
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#fafafa',
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="sm">
+        <Box component="div" sx={{textAlign:"center", my:"20vh"}}>
+          <Typography variant="h2">Bibliofraphy Filter</Typography>
+        </Box>
+        <Serch />
+      </Container>
+    </ThemeProvider>
   );
 }
 
