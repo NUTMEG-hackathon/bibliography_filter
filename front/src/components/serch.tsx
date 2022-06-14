@@ -12,7 +12,10 @@ interface FormInput {
 }
 
 const schema = yup.object({
-  search: yup.string().required('Please input something!'),
+  search: yup
+    .string()
+    .required('Please input something!')
+    .trim('Please delete space!'),
 })
 
 export default function Serch() {
@@ -44,9 +47,7 @@ export default function Serch() {
         type="submit"
         sx={{ p: '10px' }}
         aria-label="search"
-        onClick={ () => {
-          handleSubmit(onSubmit)
-        }}
+        onClick={handleSubmit(onSubmit)}
       >
         <SearchIcon />
       </IconButton>
