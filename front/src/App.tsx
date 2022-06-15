@@ -1,28 +1,21 @@
 import React from 'react';
-import { Typography, Box, CssBaseline } from '@mui/material';
-import { Container } from '@mui/system';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Serch from './components/serch';
-
-const theme = createTheme({
-  palette: {
-    background: {
-      default: '#fafafa',
-    },
-  },
-});
+import { BrowserRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
+import Home from './pages/home';
+import After from './pages/after';
+import NotFound from './pages/notfound';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Box component="div" sx={{textAlign:"center", my:"20vh"}}>
-          <Typography variant="h2">Bibliofraphy Filter</Typography>
-        </Box>
-        <Serch />
-      </Container>
-    </ThemeProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/after/posts/:search' element={<After />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
