@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   front:
-    build: ./
+    build: ./docker/node
     container_name: biblio-front
     volumes:
       - ./front:/front
@@ -9,4 +9,15 @@ services:
       - 3000:3000
     command: npm run start
     tty: true 
+    stdin_open: true
+
+  api:
+    build: ./docker/python
+    container_name: biblio-api
+    volumes:
+      - ./api:/api
+    ports:
+      - 8000:8000
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    tty: true
     stdin_open: true
