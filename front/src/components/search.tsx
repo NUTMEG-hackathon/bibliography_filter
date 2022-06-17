@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // フォームの型
 interface FormInput {
@@ -32,12 +33,16 @@ export default function Search() {
     setText(text);
   }
 
+  // ヘルパ関数
+  function printType(x: any) {
+    console.log(`${typeof(x)} ${Object.prototype.toString.call(x)}`);
+  }
+
   // フォームの送信時処理
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log(data);
-    // window.alert(`${JSON.stringify(data, null, 2)}`);
+    // console.log(data);
     setText('');
-    navigate(`/after/posts/${data.search}`, { state: { search: data.search } });
+    navigate(`/posts/${data.search}`);
   }
 
   return (

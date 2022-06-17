@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/after/posts/:search' element={<After />} />
+        <Route path='/posts/:search' element={<After />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>

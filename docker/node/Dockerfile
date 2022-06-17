@@ -1,3 +1,4 @@
 FROM node:16.13.0
 USER node
 WORKDIR /front
+EXPOSE 8000 3000

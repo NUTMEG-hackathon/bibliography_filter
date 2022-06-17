@@ -8,12 +8,9 @@ from starlette.middleware.cors import CORSMiddleware
 load_dotenv()
 
 app = FastAPI()
-origins = [
-    "http://localhost:8000",
-]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -27,6 +24,9 @@ CUSTOM_SEARCH_ENGINE_ID = (os.environ['CUSTOM_SEARCH_ENGINE_ID'])
 
 # API キー
 API_KEY = (os.environ['API_KEY']) 
+
+# 検索する個数(クォートの制限を超えないように)
+SerachNum = 1
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
@@ -45,8 +45,7 @@ def get_search_results(query):
         q = query,
         cx = CUSTOM_SEARCH_ENGINE_ID,
         lr = 'lang_ja',
-        #    num = 10,
-        num = 1,
+        num = SerachNum,
         start = 1
     ).execute()
 
@@ -64,7 +63,7 @@ def summarize_search_results(result):
     result_items = []
     
     # 今回は (start =) 1 個目の結果から (num =) 10 個の結果を取得した
-    for i in range(0, 10):
+    for i in range(0, SerachNum):
         # i番目の検索結果の部分
         result_item = result_items_part[i]
         # i番目の検索結果からそれぞれの属性の情報をResultクラスに格納して
@@ -94,17 +93,20 @@ class SearchResult:
         # コマンドライン上での表示形式はご自由にどうぞ
         return "[title] " + self.title + "\n\t[url] " + self.url + "\n\t[snippet] " + self.snippet + "\n\t[rank] " + str(self.rank)
 
-class testParam(BaseModel):
-    search : str
+class TestParam(BaseModel):
+    keyword : str
 
 @app.get("/")
 def get_root():
     return {"message": "Search sample"}
 
 @app.post("/")
-def post_root():
-    print(testParam)
-    return testParam
+def post_root(testParam: TestParam):
+    query = testParam.keyword
+    result = get_search_results(query)
+    result_items_list = summarize_search_results(result)
+    
+    return result_items_list
 
 # メインプロセス       
 if __name__ == '__main__':
@@ -119,5 +121,5 @@ if __name__ == '__main__':
     result_items_list = summarize_search_results(result) # result_items_list には SearchResult のリストが入る
 
     # コマンドラインに検索結果の情報を出力
-    for i in range(0, 10):
+    for i in range(0, SerachNum):
         print(result_items_list[i])
