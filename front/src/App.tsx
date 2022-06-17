@@ -4,8 +4,6 @@ import { Route, Routes } from 'react-router';
 import Home from './pages/home';
 import After from './pages/after';
 import NotFound from './pages/notfound';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
 
 function App() {
   return (

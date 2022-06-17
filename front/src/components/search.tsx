@@ -14,6 +14,11 @@ interface FormInput {
   search: string;
 }
 
+type SearchProps = {
+  currentUrl: string;
+  setResult?: any;
+}
+
 const schema = yup.object({
   search: yup
     .string()
@@ -21,7 +26,7 @@ const schema = yup.object({
     .trim('Please delete space!'),
 })
 
-export default function Search() {
+export default function Search(props: SearchProps) {
   const navigate = useNavigate();
   const [text, setText] = useState('');
 
@@ -39,19 +44,26 @@ export default function Search() {
   }
 
   // フォームの送信時処理
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
+  const onSubmit: SubmitHandler<FormInput> = async (data: FormInput) => {
     // console.log(data);
-    setText('');
-    navigate(`/posts/${data.search}`);
+    
+    if(props.currentUrl === '/'){
+      setText('');
+      navigate(`/posts/${data.search}`);
+    }else{
+      props.setResult([{title:'', url:'', snippet:'', rank:0}]);
+      const resultText = await axios.post('http://localhost:8000/', {'keyword': data.search,})
+      props.setResult(resultText.data);
+    }
   }
 
   return (
     <Paper
       component='form'
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 'min(80vw, 500px)', mx: 'auto', my: '5vh'}}
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 'min(80vw, 500px)', mx: 'auto', my: '5vh', borderRadius: '30px'}}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1, padding: '10px' }}
         autoComplete='off'
         placeholder='Search Bibliography'
         inputProps={{ 'aria-label': 'search Bibliography' }}

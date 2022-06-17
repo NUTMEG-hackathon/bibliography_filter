@@ -26,7 +26,7 @@ CUSTOM_SEARCH_ENGINE_ID = (os.environ['CUSTOM_SEARCH_ENGINE_ID'])
 API_KEY = (os.environ['API_KEY']) 
 
 # 検索する個数(クォートの制限を超えないように)
-SerachNum = 1
+SerachNum = 5
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
