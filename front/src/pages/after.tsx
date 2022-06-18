@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, Suspense } from 'react';
-import { Typography, Box, CssBaseline, CircularProgress, Link } from '@mui/material';
+import { Typography, Box, CssBaseline, CircularProgress, Link, Grow, Slide } from '@mui/material';
 import { Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Search from '../components/search';
@@ -46,7 +46,10 @@ export default function After() {
       return(
         <>
           { result.map((item) => (
-              <Box component='div' key={item.rank} sx={{
+            <Slide direction='up' in={true} key={item.rank}
+              mountOnEnter unmountOnExit timeout={250*(item.rank)}
+            >
+              <Box component='div'  sx={{
                   textAlign:'center', my:'10vh', backgroundColor: '#ffffff',
                   width: '80%', maxWidth: '700px', margin: '0 auto', boxShadow: 3,
                   padding: '20px', display: 'flex', flexDirection: 'row',
@@ -67,8 +70,8 @@ export default function After() {
                   <Typography variant='body1' color={'#393E46'} sx={{textAlign: 'left'}}>{item.snippet}</Typography>
                 </Box>
               </Box>
-            ))
-          }
+            </Slide>
+          ))}
         </>
       )
     }

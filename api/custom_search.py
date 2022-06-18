@@ -26,7 +26,7 @@ CUSTOM_SEARCH_ENGINE_ID = (os.environ['CUSTOM_SEARCH_ENGINE_ID'])
 API_KEY = (os.environ['API_KEY']) 
 
 # 検索する個数(クォートの制限を超えないように)
-SerachNum = 5
+search_num = 2
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
@@ -45,13 +45,18 @@ def get_search_results(query):
         q = query,
         cx = CUSTOM_SEARCH_ENGINE_ID,
         lr = 'lang_ja',
-        num = SerachNum,
+        num = search_num,
         start = 1
     ).execute()
 
     # 受け取ったjsonをそのまま返却
     return result
 
+def is_through_quote(result_item):
+    if 'wikipedia' in result_item['link']:
+        return False
+    else:
+        return True
 
 # 検索結果の情報をSearchResultに格納してリストで返す
 def summarize_search_results(result):
@@ -63,19 +68,21 @@ def summarize_search_results(result):
     result_items = []
     
     # 今回は (start =) 1 個目の結果から (num =) 10 個の結果を取得した
-    for i in range(0, SerachNum):
+    for i in range(0, search_num):
         # i番目の検索結果の部分
         result_item = result_items_part[i]
+        
         # i番目の検索結果からそれぞれの属性の情報をResultクラスに格納して
         # result_items リストに追加する
-        result_items.append(
-            SearchResult(
-                title = result_item['title'],
-                url = result_item['link'],
-                snippet = result_item['snippet'],
-                rank = i + 1
+        if is_through_quote(result_item):
+            result_items.append(
+                SearchResult(
+                    title = result_item['title'],
+                    url = result_item['link'],
+                    snippet = result_item['snippet'],
+                    rank = i + 1
+                )
             )
-        )
 
     # 結果を格納したリストを返却
     return result_items
@@ -121,5 +128,5 @@ if __name__ == '__main__':
     result_items_list = summarize_search_results(result) # result_items_list には SearchResult のリストが入る
 
     # コマンドラインに検索結果の情報を出力
-    for i in range(0, SerachNum):
+    for i in range(0, len(result_items_list)):
         print(result_items_list[i])
