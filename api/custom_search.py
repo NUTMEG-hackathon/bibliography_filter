@@ -26,7 +26,7 @@ CUSTOM_SEARCH_ENGINE_ID = (os.environ['CUSTOM_SEARCH_ENGINE_ID'])
 API_KEY = (os.environ['API_KEY']) 
 
 # 検索する個数(クォートの制限を超えないように)
-search_num = 2
+search_num = 10
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
@@ -53,7 +53,11 @@ def get_search_results(query):
     return result
 
 def is_through_quote(result_item):
-    if 'wikipedia' in result_item['link']:
+    if 'wiki' in result_item['link'] or 'blog' in result_item['link'] or 'youtube' in result_item['link']:
+        return False
+    elif 'chiebukuro' in result_item['link'] or 'oshiete.goo' in result_item['link']:
+        return False 
+    elif 'F%' in result_item['link'] or 'D%' in result_item['link']:
         return False
     else:
         return True
