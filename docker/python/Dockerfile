@@ -5,3 +5,7 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install python-dotenv
 RUN pip install google-api-python-client
+RUN pip install fastapi
+RUN pip install uvicorn[standard]
+RUN pip install pydantic
+RUN pip install starlette
