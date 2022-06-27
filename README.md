@@ -28,7 +28,6 @@
 
 ## 開発
 ### 開発の進め方
-* `docker compose build` でビルドする
 * `docker compose up (-d)` (-d は任意)でコンテナを立ち上げる
 * http://localhost:3000 に移動し、正常に表示されていることを確認する
 ### Tips
